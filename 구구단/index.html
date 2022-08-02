@@ -1,0 +1,75 @@
+
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>구구단</title>
+
+</head>
+<body>
+    <div id="root"></div>
+    <script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script> 
+    
+    <script type="text/babel">
+        class GuGuDan extends React.Component {
+            /*constructor를써도되긴하지만 실무에서는 잘안쓴다 *//*기본적으로 써줘야 할것들 위에 script*/
+                state = {
+                    first: Math.ceil(Math.random() * 9),
+                    second : Math.ceil(Math.random() * 9),
+                    value : '',
+                    result : '',
+                };
+            
+
+            onSubmit = (el)=>{ /*this앞에 function 쓰면 this가달라져서 화살표함수써야한다  즉 직접만들어준 함수들은 화살표함수를 써야한다.*/
+                        el.preventDefault();
+                        if (parseInt(this.state.value) === this.state.first * this.state.second) {
+                            this.setState((prestate) => {  /*setstate안에 this가 들어가면 함수로써주는 것이 좋다 */
+                            return{
+                                result :`${prestate.first} x ${prestate.second} = ${prestate.value} 정답!`,
+                                first : (Math.ceil(Math.random() * 9)),
+                                second :(Math.ceil(Math.random() * 9)),
+                                value :'',
+                                }
+                            });
+                            this.input.focus();//마우스커서 넣는 것 */
+                        } else {
+                            this.setState({
+                            result :`${this.state.first} x ${this.state.second} = ${this.state.value} 땡!`,
+                            first : (Math.ceil(Math.random() * 9)),
+                            second :(Math.ceil(Math.random() * 9)),
+                            value :'',
+                            });
+                            this.input.focus();
+                            }
+                                /*this앞에 화살표함수 쓰면 this가달라져서 화살표함수써야한다 */
+                    }
+                onChange = (el) =>{ 
+                    this.setState({value : el.target.value})
+                    };
+                    input; // ref안에 있는 걸 쓰기위해 만든것 이름은 상관이 없다
+
+            render(){  //소괄호넣기 //! 
+                return(
+                <React.Fragment>
+                    <div>{this.state.first} 곱하기 {this.state.second}는?</div>
+                    
+                    <input ref={(c)=>this.input= c}type="number" value={this.state.value} onChange={this.onChange} />
+                    <button onClick = {this.onSubmit}>입력!</button>
+                    <div>{this.state.result}</div>
+    
+                    </React.Fragment>
+                ) ;
+            }
+        }
+
+/*state를 할때마다 render에있는 것이 돌아가므로 많이넣으면 성능이저하됨*/
+/*setState를쓰는 이유? 함부로 값을 추가하거나 바꿀수앖기 때문 */
+    </script>
+    <script type ="text/babel">
+        ReactDOM.render(<GuGuDan />, document.querySelector('#root'))
+    </script>
+</body>
+</html>
+
